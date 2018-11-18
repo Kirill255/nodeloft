@@ -1,0 +1,15 @@
+{
+  "root": true,
+  "extends": "standard",
+  "rules": {
+    "no-extra-semi": "error",
+    "semi": [
+      "error",
+      "always"
+    ],
+    "quotes": [
+      "error",
+      "double"
+    ]
+  }
+}
