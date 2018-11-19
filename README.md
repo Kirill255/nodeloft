@@ -33,9 +33,65 @@ https://npms.io/search?q=fs-extra
 
 ## Run
 
+Положить папку для сортировки/копирования в папку с программой (тоесть в корень)
+
 `node index.js -f=testfolder -o=result`
+
+`node index.js -f=testfolder -o=result -d`
+
+
+## Options
+
+```
+-f or --folder: папка для сортировки и копирования
+
+-o or --output: папка для результата, куда копировать
+
+-d or --delete: удалить исходную папку после копирования, (необязательный) передавать без значения
+
+```
 
 
 ## Error `EPERM` on Windows
 
 https://github.com/jprichardson/node-fs-extra#windows
+
+
+## Explanation
+
+после checkFiles приходит массив с: там где был файл -> просто объект, там где была папка -> массив с объектами, тоесть таккой массив с возможными вложенными массивами:
+
+```
+files : [ { name: 'eee.txt', _path: 'testfolder\\eee.txt' },
+  [ { name: 'eop.txt', _path: 'testfolder\\new1\\eop.txt' },
+    { name: 'ooo.txt', _path: 'testfolder\\new1\\ooo.txt' } ],
+  [ { name: 'ppp.txt', _path: 'testfolder\\new2\\ppp.txt' },
+    { name: 'rwq.txt', _path: 'testfolder\\new2\\rwq.txt' },
+    { name: 'sss.txt', _path: 'testfolder\\new2\\sss.txt' } ],
+  [ [ [Array] ],
+    { name: 'yyy.txt', _path: 'testfolder\\new3\\yyy.txt' } ],
+  { name: 'rrr.txt', _path: 'testfolder\\rrr.txt' },
+  { name: 'ttt.txt', _path: 'testfolder\\ttt.txt' } ]
+```
+
+после flattenArray нам уже приходит один развёрнутый массив, тоесть все вложенные массивы мы развернули:
+
+```
+files : [ { name: 'eee.txt', _path: 'testfolder\\eee.txt' },
+  { name: 'eop.txt', _path: 'testfolder\\new1\\eop.txt' },
+  { name: 'ooo.txt', _path: 'testfolder\\new1\\ooo.txt' },
+  { name: 'ppp.txt', _path: 'testfolder\\new2\\ppp.txt' },
+  { name: 'rwq.txt', _path: 'testfolder\\new2\\rwq.txt' },
+  { name: 'sss.txt', _path: 'testfolder\\new2\\sss.txt' },
+  { name: 'iii.txt',
+    _path: 'testfolder\\new3\\new4\\new5\\iii.txt' },
+  { name: 'trw.txt',
+    _path: 'testfolder\\new3\\new4\\new5\\trw.txt' },
+  { name: 'uuu.txt',
+    _path: 'testfolder\\new3\\new4\\new5\\uuu.txt' },
+  { name: 'yyy.txt', _path: 'testfolder\\new3\\yyy.txt' },
+  { name: 'rrr.txt', _path: 'testfolder\\rrr.txt' },
+  { name: 'ttt.txt', _path: 'testfolder\\ttt.txt' } ]
+```
+
+тоесть в итоге функция readDir вернёт нам вот этот результат, массив с вложенными объектами
