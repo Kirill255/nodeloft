@@ -50,10 +50,11 @@ for (const modelName of Object.keys(sequelize.models)) {
 // createGroups();
 
 // обновление групп
+// Model.find has been deprecated, please use Model.findOne instead
 async function updateGroup (id) {
   const data = await sequelize.models
     .group
-    .find({
+    .findOne({
       where: {
         id: id
       }
@@ -69,4 +70,4 @@ async function updateGroup (id) {
   // await data.destroy(); // если нужно удалить какой-то элемент
   fs.writeFileSync("log.json", JSON.stringify(data));
 }
-updateGroup(2); // мы создавали 4 группы, сейчас хотим обновить группу с id=2 и ещё запишем log.json
+updateGroup(3); // мы создавали 4 группы, сейчас хотим обновить группу с id=3 и ещё запишем log.json

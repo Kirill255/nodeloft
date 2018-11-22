@@ -41,11 +41,22 @@ VALUES (1451, 'Анна', 2014),
 ```
 
 
-# Sequelize
+## Sequelize
 
 For using Sequelize with postgres you must install sequelize, pg, pg-hstore
 
 `npm install --save sequelize pg pg-hstore`
+
+Операции нужно делать по очереди, создали таблицы(модели с ассоциациями), потом создали группы, потом обновили и т.д.
+
+
+### Create groups
+
+![Create groups](https://i.imgur.com/qjqqhdR.png)
+
+### Update group
+
+![Update group](https://i.imgur.com/GhxMILz.png)
 
 
 ## Установка eslint
