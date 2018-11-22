@@ -1,4 +1,4 @@
-const fs = require("fs");
+// const fs = require("fs");
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize("test", "postgres", "", { // new Sequelize("database", "username", "password", {});
   host: "localhost",
@@ -51,23 +51,56 @@ for (const modelName of Object.keys(sequelize.models)) {
 
 // обновление групп
 // Model.find has been deprecated, please use Model.findOne instead
-async function updateGroup (id) {
-  const data = await sequelize.models
-    .group
-    .findOne({
-      where: {
-        id: id
-      }
-    });
+// async function updateGroup (id) {
+//   const data = await sequelize.models
+//     .group
+//     .findOne({
+//       where: {
+//         id: id
+//       }
+//     });
 
-  // const data = await sequelize.models.group.findAll(); // если найти все
+//   // const data = await sequelize.models.group.findAll(); // если найти все
 
-  let params = {
-    name: "Группа закрыта"
-  };
+//   let params = {
+//     name: "Группа закрыта"
+//   };
 
-  await data.update(params);
-  // await data.destroy(); // если нужно удалить какой-то элемент
-  fs.writeFileSync("log.json", JSON.stringify(data));
+//   await data.update(params);
+//   // await data.destroy(); // если нужно удалить какой-то элемент
+//   fs.writeFileSync("log.json", JSON.stringify(data));
+// }
+// updateGroup(3); // мы создавали 4 группы, сейчас хотим обновить группу с id=3 и ещё запишем log.json
+
+// создание учителей
+async function createTeacher () {
+  try {
+    const params = {
+      name: "Юрий Кучма",
+      group: {
+        name: "Серверный JS"
+      },
+      students: [
+        {
+          name: "Анна"
+        },
+        {
+          name: "Роман"
+        }
+      ]
+    };
+    const data = await sequelize.models
+      .teacher
+      .create(params, {
+        include: [
+          {
+            all: true
+          }
+        ]
+      });
+    console.log(data);
+  } catch (err) {
+    console.log(err);
+  }
 }
-updateGroup(3); // мы создавали 4 группы, сейчас хотим обновить группу с id=3 и ещё запишем log.json
+createTeacher();

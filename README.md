@@ -59,6 +59,15 @@ For using Sequelize with postgres you must install sequelize, pg, pg-hstore
 ![Update group](https://i.imgur.com/GhxMILz.png)
 
 
+### Create teachers
+
+![Teachers](https://i.imgur.com/ulz9wXS.png)
+
+![Students](https://i.imgur.com/oofMdNr.png)
+
+![Groups](https://i.imgur.com/UdNW2qU.png)
+
+
 ## Установка eslint
 
 https://eslint.org/docs/user-guide/getting-started
