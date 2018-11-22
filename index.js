@@ -1,22 +1,36 @@
-const { Pool } = require("pg");
-const pool = new Pool({
-  user: "postgres", // при установке самой базы на компьютер мы не меняли имя, по умолчанию оно postgres
+const Sequelize = require("sequelize");
+const sequelize = new Sequelize("test", "postgres", "", { // new Sequelize("database", "username", "password", {});
   host: "localhost",
-  database: "test",
-  password: "", // при установке мы не ставили пароль
-  port: 5432, // это тоже номер порта по умолчанию
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000
+  port: 5432,
+  dialect: "postgres",
+  operatorsAliases: false,
+  pool: {
+    max: 5,
+    min: 0,
+    idle: 10000
+  }
 });
 
-async function connect () {
-  const db = await pool.connect();
+sequelize.sync();
+sequelize.authenticate()
+  .then(() => {
+    console.log("Connection has been established successfully.");
+  })
+  .catch(err => {
+    console.error("Unable to connect to the database:", err);
+  });
 
-  const data = await db.query("SELECT * FROM students");
-  console.log("data :", data.rows);
-
-  db.release();
-  pool.end().then(() => console.log("pool has ended"));
+// подключаем модели
+const modelNames = ["Teacher", "Group", "Student"];
+for (const modelName of modelNames) {
+  sequelize.import(`./models/${modelName}.js`);
 }
-connect();
+
+// применяем все ассоциации
+for (const modelName of Object.keys(sequelize.models)) {
+  if ("associate" in sequelize.models[modelName]) {
+    sequelize.models[modelName]
+      .associate(sequelize.models);
+  }
+}
+// настройки закончены

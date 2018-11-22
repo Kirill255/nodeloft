@@ -41,6 +41,13 @@ VALUES (1451, 'Анна', 2014),
 ```
 
 
+# Sequelize
+
+For using Sequelize with postgres you must install sequelize, pg, pg-hstore
+
+`npm install --save sequelize pg pg-hstore`
+
+
 ## Установка eslint
 
 https://eslint.org/docs/user-guide/getting-started
