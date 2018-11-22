@@ -1,3 +1,4 @@
+const fs = require("fs");
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize("test", "postgres", "", { // new Sequelize("database", "username", "password", {});
   host: "localhost",
@@ -36,14 +37,36 @@ for (const modelName of Object.keys(sequelize.models)) {
 // настройки закончены
 
 // создание групп
-async function createGroups () {
-  for (let i = 0; i <= 3; i++) {
-    let obj = {
-      name: `Группа ${i}`
-    };
-    await sequelize.models
-      .group
-      .create(obj);
-  }
+// async function createGroups () {
+//   for (let i = 0; i <= 3; i++) {
+//     let obj = {
+//       name: `Группа ${i}`
+//     };
+//     await sequelize.models
+//       .group
+//       .create(obj);
+//   }
+// }
+// createGroups();
+
+// обновление групп
+async function updateGroup (id) {
+  const data = await sequelize.models
+    .group
+    .find({
+      where: {
+        id: id
+      }
+    });
+
+  // const data = await sequelize.models.group.findAll(); // если найти все
+
+  let params = {
+    name: "Группа закрыта"
+  };
+
+  await data.update(params);
+  // await data.destroy(); // если нужно удалить какой-то элемент
+  fs.writeFileSync("log.json", JSON.stringify(data));
 }
-createGroups();
+updateGroup(2); // мы создавали 4 группы, сейчас хотим обновить группу с id=2 и ещё запишем log.json
