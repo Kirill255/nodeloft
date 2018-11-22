@@ -1,61 +1,45 @@
 # nodeloft
 
-https://habr.com/post/309936/
+https://github.com/brianc/node-postgres
+
+https://github.com/sequelize/sequelize
 
 
-3 основных пакета-конкурента:
+## Start
 
-https://www.npmtrends.com/commander-vs-minimist-vs-yargs
+https://postgrespro.ru/windows - скачал базу PostgreSQL 10.5 32-разрядная
 
-доп:
+https://www.pgadmin.org/download/pgadmin-4-windows/ - pgAdmin 4 v3.5 (released Nov. 1, 2018)
 
-https://npms.io/search?q=fs-extra
+https://postgrespro.ru/education/books - PostgreSQL для начинающих
 
+https://edu.postgrespro.ru/introbook_v4.pdf - кратко почитал книгу
 
-## Run
+Сначала мы установили базу на компьютер, паротль при установке не ставили, выбрали пункт «Использовать
+параметры по умолчанию», чтобы СУБД не занимала много оперативной памяти.
 
-`node index.js -f=testfolder`
+Дальше запустили службу сервера базы данных, если не запущена.
 
-результат примерно такой: (я пока не понял как сделать чтобы вывод был сгруппирован по папкам и файлам, а не в разброс, попробовал несколько способов, рузультат разный, но во всех случаях не тот что нужен)
+Дальше через pgAdmin создали базу test,
+и создали в ней таблицу:
 
+```sql
+CREATE TABLE students(
+s_id integer PRIMARY KEY,
+name text,
+start_year integer
+);
 ```
-Работаем!
-File: eee.txt
-Dir: new1
-  File: ooo.txt
-Dir: new2
-  File: ppp.txt
-  File: sss.txt
-Dir: new3
-  Dir: new4
-    Dir: new5
-      File: iii.txt
-      File: uuu.txt
-  File: yyy.txt
-File: rrr.txt
-File: ttt.txt
-Всё сделано!
-```
-желаемый
 
+и вставили первую запись:
+
+```sql
+INSERT INTO students(s_id, name, start_year)
+VALUES (1451, 'Анна', 2014),
+(1432, 'Виктор', 2014),
+(1556, 'Нина', 2015);
 ```
-Работаем!
-Dir: new1
-  File: ooo.txt
-Dir: new2
-  File: ppp.txt
-  File: sss.txt
-Dir: new3
-  Dir: new4
-    Dir: new5
-      File: iii.txt
-      File: uuu.txt
-  File: yyy.txt
-File: eee.txt
-File: rrr.txt
-File: ttt.txt
-Всё сделано!
-```
+
 
 ## Установка eslint
 
