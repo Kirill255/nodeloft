@@ -34,3 +34,16 @@ for (const modelName of Object.keys(sequelize.models)) {
   }
 }
 // настройки закончены
+
+// создание групп
+async function createGroups () {
+  for (let i = 0; i <= 3; i++) {
+    let obj = {
+      name: `Группа ${i}`
+    };
+    await sequelize.models
+      .group
+      .create(obj);
+  }
+}
+createGroups();
