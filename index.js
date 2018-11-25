@@ -1,10 +1,18 @@
 const express = require("express");
 const errorhandler = require("errorhandler");
 const notifier = require("node-notifier");
+const cluster = require("cluster");
 
 const app = express();
 
 console.log(app.get("env"));
+
+app.use((req, res, next) => {
+  if (cluster.isWorker) {
+    console.log(`ID: ${cluster.worker.id}`);
+  }
+  next();
+});
 
 app.get("/", (req, res, next) => {
   res.send("Hello world");
@@ -40,9 +48,17 @@ switch (app.get("env")) {
     break;
 }
 
-app.listen(3000, () => {
-  console.log("App listening on port 3000!");
-});
+function startServer () {
+  app.listen(3000, () => {
+    console.log("App listening on port 3000!");
+  });
+}
+
+if (require.main === module) {
+  startServer(); // launch via node index.js
+} else {
+  module.exports = startServer; // export as module
+}
 
 /* eslint-disable-next-line */
 function errorNotification(err, str, req) {
